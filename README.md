@@ -11,8 +11,13 @@ An interactive shell developed by Python to be used as a client to communicate w
     
 2. Run the command line:
     ```sh
-    amqpcli -b amqp://guest:guest@localhost:5672/
+    amqpcli -H localhost:5672 -u guest -p guest -V /
     ```
     
     That is it!  
     Just try to enter a `help` command to check all available commands and their corresponding usages.
+    
+Certainly you can also download the source code and run:
+```sh
+PYTHONPATH=./ bin/amqpcli -H localhost:5672 -u guest -p guest -V /
+```
