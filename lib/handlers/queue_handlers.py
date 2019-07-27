@@ -1,40 +1,24 @@
 # -*- coding: utf-8 -*-
+
 import amqp
 
 from lib.argument import StringArgument, BoolArgument
 from lib.user_interface import UserInterface
+from lib.handlers.base_handler import Handler
 
-class Handler(object):
-    group = None
-    name = None
+class QueueDeleteHandler(Handler):
+    group = 'queue'
+    name = 'delete'
 
-    def __init__(self, channel, arguments):
-        self.channel = channel
-        self.parsed_arguments = {}
-        self.parse_arguments(arguments)
-
-    def parse_arguments(self, arguments):
-        if len(arguments) == 0:
-            return
-
-        index = 0
-        for meta_argument in self.meta_arguments:
-            if index >= len(arguments):
-                self.parsed_arguments[meta_argument.name] = meta_argument.default
-            else:
-                self.parsed_arguments[meta_argument.name] = meta_argument.parse(arguments[index])
-            index += 1
-
-    def perform(self):
-        try:
-            self.run()
-            UserInterface.output('done.')
-        except BaseException as e:
-            UserInterface.output(e.message)
+    meta_arguments = (
+        StringArgument('queue', 'queue name'),
+        BoolArgument('if_unused', 'delete only if unused'),
+        BoolArgument('if_empty', 'delete only if empty'),
+    )
 
     def run(self):
-        raise NotImplementedError
-
+        msg_count = self.channel.queue_delete(**self.parsed_arguments)
+        UserInterface.output("{} messages deleted".format(msg_count))
 
 class QueueDeclareHandler(Handler):
     group = "queue"
@@ -55,20 +39,6 @@ class QueueDeclareHandler(Handler):
             UserInterface.output("Queue `{}` not found".format(self.parsed_arguments['queue']))
             return
         UserInterface.output("Queue: {}, msg_count: {}, consumer_count: {}".format(queue, msg_count, consumer_count))
-
-class QueueDeleteHandler(Handler):
-    group = 'queue'
-    name = 'delete'
-
-    meta_arguments = (
-        StringArgument('queue', 'queue name'),
-        BoolArgument('if_unused', 'delete only if unused'),
-        BoolArgument('if_empty', 'delete only if empty'),
-    )
-
-    def run(self):
-        msg_count = self.channel.queue_delete(**self.parsed_arguments)
-        UserInterface.output("{} messages deleted".format(msg_count))
 
 class QueueBindHandler(Handler):
     group = 'queue'

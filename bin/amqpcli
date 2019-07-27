@@ -4,13 +4,7 @@
 from argparse import ArgumentParser
 
 from lib.app import App
-from lib.handler import (
-    QueueDeclareHandler,
-    QueueDeleteHandler,
-    QueueBindHandler,
-    QueueUnbindHandler,
-    QueuePurgeHandler,
-)
+from lib.handlers import *
 from lib.version import Version
 
 def run_application(options):
