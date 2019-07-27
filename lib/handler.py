@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+import amqp
 
 from lib.argument import StringArgument, BoolArgument
+from lib.user_interface import UserInterface
 
 class Handler(object):
     group = None
@@ -40,5 +42,9 @@ class QueueDeclareHandler(Handler):
     )
 
     def run(self):
-        reply = self.channel.queue_declare(**self.parsed_arguments)
-        print reply
+        try:
+            queue, msg_count, consumer_count = self.channel.queue_declare(**self.parsed_arguments)
+        except amqp.exceptions.NotFound:
+            UserInterface.output("Queue `{}` not found".format(self.parsed_arguments['queue']))
+            return
+        UserInterface.output("Queue: {}, msg_count: {}, consumer_count: {}".format(queue, msg_count, consumer_count))

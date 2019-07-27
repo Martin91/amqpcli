@@ -2,11 +2,15 @@
 
 import six
 
+line_counter = 0
+
 class UserInterface(object):
     @staticmethod  # return the user's input in string
     def read():
+        global line_counter
+        line_counter += 1
         if six.PY2:
-            return raw_input()
+            return raw_input("[%d]:> " % line_counter)
         else:
             return input()
 
