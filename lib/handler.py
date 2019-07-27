@@ -62,3 +62,20 @@ class QueueDeleteHandler(Handler):
     def run(self):
         msg_count = self.channel.queue_delete(**self.parsed_arguments)
         UserInterface.output("{} messages deleted".format(msg_count))
+
+class QueueBindHandler(Handler):
+    group = 'queue'
+    name = 'bind'
+
+    meta_arguments = (
+        StringArgument('queue', 'queue name'),
+        StringArgument('exchange', 'The name of the exchange to bind to'),
+        StringArgument('routing_key', 'message routing key'),
+    )
+
+    def run(self):
+        try:
+            self.channel.queue_bind(**self.parsed_arguments)
+            UserInterface.output('success')
+        except BaseException as e:
+            UserInterface.output(e.message)
