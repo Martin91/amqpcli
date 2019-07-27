@@ -32,6 +32,12 @@ class BoolArgument(Argument):
             return False
         raise InvalidArgumentValueError("Not recognized value {} for {}".format(value, self.name))
 
+class LongArgument(Argument):
+    default = 0
+
+    def parse(self, value):
+        return long(float(value))
+
 class StringArgument(Argument):
     default = ""
 

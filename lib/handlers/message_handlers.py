@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from lib.argument import StringArgument, BoolArgument, MessageArgument
+from lib.argument import StringArgument, BoolArgument, MessageArgument, LongArgument
 from lib.user_interface import UserInterface
 from lib.handlers.base_handler import Handler
 
@@ -23,7 +23,7 @@ class BasicAckHandler(Handler):
     name = 'ack'
 
     meta_arguments = (
-        StringArgument('delivery_tag', 'server-assigned delivery tag'),
+        LongArgument('delivery_tag', 'server-assigned delivery tag'),
     )
 
     def run(self):
@@ -40,4 +40,8 @@ class BasicGetHandler(Handler):
 
     def run(self):
         reply = self.channel.basic_get(**self.parsed_arguments)
-        UserInterface.output(reply.body)
+        if reply:
+            UserInterface.output(reply.body)
+            UserInterface.output(reply.delivery_info)
+        else:
+            UserInterface.output("no msg.")

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import amqp
-
 from lib.argument import StringArgument, BoolArgument
 from lib.user_interface import UserInterface
 from lib.handlers.base_handler import Handler
