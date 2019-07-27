@@ -79,3 +79,20 @@ class QueueBindHandler(Handler):
             UserInterface.output('success')
         except BaseException as e:
             UserInterface.output(e.message)
+
+class QueueUnbindHandler(Handler):
+    group = 'queue'
+    name = 'unbind'
+
+    meta_arguments = (
+        StringArgument('queue', 'queue name'),
+        StringArgument('exchange', 'The name of the exchange to bind to'),
+        StringArgument('routing_key', 'message routing key'),
+    )
+
+    def run(self):
+        try:
+            self.channel.queue_unbind(**self.parsed_arguments)
+            UserInterface.output('success')
+        except BaseException as e:
+            UserInterface.output(e.message)
