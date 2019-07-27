@@ -9,6 +9,8 @@ from lib.version import Version
 
 def run_application(options):
     App.register_handlers(
+        ExchangeDeclareHandler,
+        ExchangeDeleteHandler,
         QueueDeclareHandler,
         QueueDeleteHandler,
         QueueBindHandler,
