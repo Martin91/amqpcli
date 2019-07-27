@@ -4,11 +4,14 @@
 from argparse import ArgumentParser
 
 from lib.app import App
-from lib.handler import QueueDeclareHandler
+from lib.handler import QueueDeclareHandler, QueueDeleteHandler
 from lib.version import Version
 
 def run_application(options):
-    App.register_handlers(QueueDeclareHandler)
+    App.register_handlers(
+        QueueDeclareHandler,
+        QueueDeleteHandler,
+    )
     app = App(host=options.host, userid=options.userid, password=options.password, virtual_host=options.virtual_host)
     app.welcome()
     app.event_loop()

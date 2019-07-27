@@ -48,3 +48,17 @@ class QueueDeclareHandler(Handler):
             UserInterface.output("Queue `{}` not found".format(self.parsed_arguments['queue']))
             return
         UserInterface.output("Queue: {}, msg_count: {}, consumer_count: {}".format(queue, msg_count, consumer_count))
+
+class QueueDeleteHandler(Handler):
+    group = 'queue'
+    name = 'delete'
+
+    meta_arguments = (
+        StringArgument('queue', 'queue name'),
+        BoolArgument('if_unused', 'delete only if unused'),
+        BoolArgument('if_empty', 'delete only if empty'),
+    )
+
+    def run(self):
+        msg_count = self.channel.queue_delete(**self.parsed_arguments)
+        UserInterface.output("{} messages deleted".format(msg_count))

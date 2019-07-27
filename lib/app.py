@@ -44,7 +44,7 @@ class App(object):
         for handler in App.handlers:
             command = handler.group + "." + handler.name
             for meta_argument in handler.meta_arguments:
-                command += ' ' + meta_argument.name + ':' + str(meta_argument.default)
+                command += ' ' + str(meta_argument)
             UserInterface.output(command)
 
     def terminate(self):

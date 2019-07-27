@@ -14,7 +14,7 @@ class Argument(object):
             self.default = self.__class__.default
 
     def __str__(self):
-        return "{}:{}".format(self.name, self.__class__.default)
+        return "{}:{}".format(self.name, self.default)
 
     def parse(self, value):
         raise NotImplementedError("Not implemented")
@@ -36,3 +36,6 @@ class StringArgument(Argument):
 
     def parse(self, value):
         return value
+
+    def __str__(self):
+        return self.name
