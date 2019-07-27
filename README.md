@@ -11,7 +11,7 @@ An interactive shell developed by Python to be used as a client to communicate w
     
 2. Run the command line:
     ```sh
-    amqpcli -b http://localhost:5627/vhost/
+    amqpcli -b amqp://guest:guest@localhost:5672/
     ```
     
     That is it!  
