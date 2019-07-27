@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from optparse import OptionParser
+
+from lib.app import App
+from lib.handler import QueueDeclareHandler
+
+def run_application(broker):
+    app = App(broker)
+    app.register_handlers(QueueDeclareHandler)
+    app.welcome()
+
+    app.event_loop()
+
+def parse_options():
+    parser = OptionParser()
+    parser.add_option("-b", "--broker", dest="broker", help="the broker url")
+    opts, _ = parser.parse_args()
+    return opts
+
+
+if __name__ == "__main__":
+    options = parse_options()
+    run_application(options.broker)
