@@ -1,7 +1,5 @@
-import amqp
-
+# -*- coding: utf-8 -*-
 from lib.argument import StringArgument, BoolArgument
-from lib.user_interface import UserInterface
 from lib.handlers.base_handler import Handler
 
 class ExchangeDeclareHandler(Handler):

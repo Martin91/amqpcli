@@ -16,6 +16,9 @@ def run_application(options):
         QueueBindHandler,
         QueueUnbindHandler,
         QueuePurgeHandler,
+        BasicGetHandler,
+        BasicPublishHandler,
+        BasicAckHandler,
     )
     app = App(host=options.host, userid=options.userid, password=options.password, virtual_host=options.virtual_host)
     app.welcome()

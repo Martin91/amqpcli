@@ -33,11 +33,7 @@ class QueueDeclareHandler(Handler):
     )
 
     def run(self):
-        try:
-            queue, msg_count, consumer_count = self.channel.queue_declare(**self.parsed_arguments)
-        except amqp.exceptions.NotFound:
-            UserInterface.output("Queue `{}` not found".format(self.parsed_arguments['queue']))
-            return
+        queue, msg_count, consumer_count = self.channel.queue_declare(**self.parsed_arguments)
         UserInterface.output("Queue: {}, msg_count: {}, consumer_count: {}".format(queue, msg_count, consumer_count))
 
 class QueueBindHandler(Handler):

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from amqp.basic_message import Message
 
 from lib.error import InvalidArgumentValueError
 
@@ -36,6 +37,15 @@ class StringArgument(Argument):
 
     def parse(self, value):
         return value
+
+    def __str__(self):
+        return self.name
+
+class MessageArgument(Argument):
+    default = ""
+
+    def parse(self, value):
+        return Message(body=value)
 
     def __str__(self):
         return self.name
