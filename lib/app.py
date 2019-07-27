@@ -2,6 +2,7 @@
 
 from amqp.connection import Connection, Channel
 
+from lib.banner import banner
 from lib.error import UnsupportedCommandError, InvalidArgumentValueError
 from lib.user_interface import UserInterface
 
@@ -34,7 +35,9 @@ class App(object):
 
     @staticmethod
     def welcome():
-        UserInterface.output("Connected to the channel.\nType `help` to see the help document or a command like `queue.declare`")
+        UserInterface.output(banner.lstrip() + "Connected to the channel.\n"
+                             "Type `help` to see the help document.\n"
+                             "Type `exit` or `Ctrl+C` whenever to exit this shell.")
 
     @staticmethod
     def help():
@@ -43,34 +46,38 @@ class App(object):
             for meta_argument in handler.meta_arguments:
                 command += ' ' + meta_argument.name + ':' + str(meta_argument.default)
             UserInterface.output(command)
-        UserInterface.output("help")
-        UserInterface.output("exit")
+
+    def terminate(self):
+        UserInterface.output("Oops! Please don't go... /(ㄒoㄒ)/~~")
+        self.terminated = True
 
     def event_loop(self):
         self.terminated = False
 
-        # event_loop starts a event loop to "read - parse - handle - output"
-        while not self.terminated:
-            cmd = UserInterface.read()
-            try:
-                if len(cmd) == 0:
-                    UserInterface.output("Nothing entered, please type any command")
-                    continue
+        try:
+            # event_loop starts a event loop to "read - parse - handle - output"
+            while not self.terminated:
+                cmd = UserInterface.read()
+                try:
+                    if len(cmd) == 0:
+                        UserInterface.output("Nothing entered, please type any command")
+                        continue
 
-                if cmd.split()[0] == "exit":
-                    UserInterface.output("Oops! Please don't go... /(ㄒoㄒ)/~~")
-                    self.terminated = True
-                    continue
+                    if cmd.split()[0] == "exit":
+                        self.terminate()
+                        continue
 
-                if cmd.split()[0] == "help":
-                    App.help()
-                    continue
+                    if cmd.split()[0] == "help":
+                        App.help()
+                        continue
 
-                self.dispatch(cmd)
-            except UnsupportedCommandError:
-                UserInterface.output("Unsupported Command: {}".format(cmd))
-            except InvalidArgumentValueError as e:
-                UserInterface.output(e.message)
+                    self.dispatch(cmd)
+                except UnsupportedCommandError:
+                    UserInterface.output("Unsupported Command: {}".format(cmd))
+                except InvalidArgumentValueError as e:
+                    UserInterface.output(e.message)
+        except KeyboardInterrupt:
+            self.terminate()
 
     def dispatch(self, cmd):
         # dispatch forwards the cmd and its arguments to corresponding handler
