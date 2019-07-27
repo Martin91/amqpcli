@@ -36,6 +36,16 @@ class App(object):
     def welcome():
         UserInterface.output("Connected to the channel.\nType `help` to see the help document or a command like `queue.declare`")
 
+    @staticmethod
+    def help():
+        for handler in App.handlers:
+            command = handler.group + "." + handler.name
+            for meta_argument in handler.meta_arguments:
+                command += ' ' + meta_argument.name + ':' + str(meta_argument.default)
+            UserInterface.output(command)
+        UserInterface.output("help")
+        UserInterface.output("exit")
+
     def event_loop(self):
         self.terminated = False
 
@@ -50,6 +60,10 @@ class App(object):
                 if cmd.split()[0] == "exit":
                     UserInterface.output("Oops! Please don't go... /(ㄒoㄒ)/~~")
                     self.terminated = True
+                    continue
+
+                if cmd.split()[0] == "help":
+                    App.help()
                     continue
 
                 self.dispatch(cmd)
