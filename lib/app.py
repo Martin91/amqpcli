@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from amqp.connection import Connection, Channel
+
 from lib.error import UnsupportedCommandError, InvalidArgumentValueError
 from lib.user_interface import UserInterface
 
@@ -10,18 +12,33 @@ class App(object):
     def register_handlers(cls, *handlers):
         cls.handlers = list(handlers)
 
-    def __init__(self, broker):
-        # broker: string, the url of the broker(AMQP server host)
-        self.broker = broker
-        self.terminated = False  # if the app has terminated its event loop
+    def __init__(self, host, userid, password, virtual_host):
+        self.connection_meta = {}
+        if host:
+            self.connection_meta['host'] = host
+        if userid:
+            self.connection_meta['userid'] = userid
+        if password:
+            self.connection_meta['password'] = password
+        if virtual_host:
+            self.connection_meta['virtual_host'] = virtual_host
+
+        self.terminated = False
         self.connection = None
         self.channel = None
+        self.setup_conn()
+
+    def setup_conn(self):
+        self.connection = Connection(**self.connection_meta)
+        self.channel = Channel(self.connection)
 
     @staticmethod
     def welcome():
-        UserInterface.output("Hello World")
+        UserInterface.output("Connected to the channel.\nType `help` to see the help document or a command like `queue.declare`")
 
     def event_loop(self):
+        self.terminated = False
+
         # event_loop starts a event loop to "read - parse - handle - output"
         while not self.terminated:
             cmd = UserInterface.read()

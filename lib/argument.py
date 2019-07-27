@@ -5,10 +5,13 @@ from lib.error import InvalidArgumentValueError
 class Argument(object):
     default = None
 
-    def __init__(self, name, desc):
+    def __init__(self, name, desc, default=None):
         self.name = name
         self.desc = desc  # reserved design
-        self._value = self.__class__.default
+        if default is not None:
+            self.default = default
+        else:
+            self.default = self.__class__.default
 
     def __str__(self):
         return "{}:{}".format(self.name, self.__class__.default)
@@ -22,15 +25,14 @@ class BoolArgument(Argument):
 
     def parse(self, value):
         if value.lower() == "true":
-            self._value = True
-            return
+            return True
+
         if value.lower() == "false":
-            self._value = False
-            return
+            return False
         raise InvalidArgumentValueError("Not recognized value {} for {}".format(value, self.name))
 
 class StringArgument(Argument):
     default = ""
 
     def parse(self, value):
-        self._value = value
+        return value
