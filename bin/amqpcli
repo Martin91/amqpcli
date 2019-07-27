@@ -9,6 +9,7 @@ from lib.handler import (
     QueueDeleteHandler,
     QueueBindHandler,
     QueueUnbindHandler,
+    QueuePurgeHandler,
 )
 from lib.version import Version
 
@@ -18,6 +19,7 @@ def run_application(options):
         QueueDeleteHandler,
         QueueBindHandler,
         QueueUnbindHandler,
+        QueuePurgeHandler,
     )
     app = App(host=options.host, userid=options.userid, password=options.password, virtual_host=options.virtual_host)
     app.welcome()

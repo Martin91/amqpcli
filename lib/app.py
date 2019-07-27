@@ -84,5 +84,5 @@ class App(object):
         cmd, arguments = cmd.split()[0], cmd.split()[1:]
         for handler in App.handlers:
             if cmd == handler.group + "." + handler.name:
-                return handler(channel=self.channel, arguments=arguments).run()
+                return handler(channel=self.channel, arguments=arguments).perform()
         raise UnsupportedCommandError

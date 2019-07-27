@@ -25,6 +25,13 @@ class Handler(object):
                 self.parsed_arguments[meta_argument.name] = meta_argument.parse(arguments[index])
             index += 1
 
+    def perform(self):
+        try:
+            self.run()
+            UserInterface.output('done.')
+        except BaseException as e:
+            UserInterface.output(e.message)
+
     def run(self):
         raise NotImplementedError
 
@@ -74,11 +81,7 @@ class QueueBindHandler(Handler):
     )
 
     def run(self):
-        try:
-            self.channel.queue_bind(**self.parsed_arguments)
-            UserInterface.output('success')
-        except BaseException as e:
-            UserInterface.output(e.message)
+        self.channel.queue_bind(**self.parsed_arguments)
 
 class QueueUnbindHandler(Handler):
     group = 'queue'
@@ -91,8 +94,16 @@ class QueueUnbindHandler(Handler):
     )
 
     def run(self):
-        try:
-            self.channel.queue_unbind(**self.parsed_arguments)
-            UserInterface.output('success')
-        except BaseException as e:
-            UserInterface.output(e.message)
+        self.channel.queue_unbind(**self.parsed_arguments)
+        UserInterface.output('success')
+
+class QueuePurgeHandler(Handler):
+    group = 'queue'
+    name = 'purge'
+
+    meta_arguments = (
+        StringArgument('queue', 'queue name'),
+    )
+
+    def run(self):
+        self.channel.queue_purge(**self.parsed_arguments)
