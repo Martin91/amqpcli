@@ -13,6 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Martin91/amqpcli",
     packages=setuptools.find_packages(),
+    scripts=['bin/amqpcli'],
     classifiers=[
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
