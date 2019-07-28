@@ -59,7 +59,6 @@ class QueueUnbindHandler(Handler):
 
     def run(self):
         self.channel.queue_unbind(**self.parsed_arguments)
-        UserInterface.output('success')
 
 class QueuePurgeHandler(Handler):
     group = 'queue'

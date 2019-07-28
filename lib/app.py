@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from amqp import VERSION
 from amqp.connection import Connection, Channel
 
 from lib.banner import banner
@@ -32,6 +32,12 @@ class App(object):
     def setup_conn(self):
         self.connection = Connection(**self.connection_meta)
         self.channel = Channel(self.connection)
+
+        # Since amqp v2.0, you should explicitly call Connection.connect() and Channel.open()
+        if VERSION[0] >= 2:
+            self.connection.connect()
+            self.channel.open()
+
 
     @staticmethod
     def welcome():

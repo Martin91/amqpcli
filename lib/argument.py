@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import six
+
 from amqp.basic_message import Message
 
 from lib.error import InvalidArgumentValueError
@@ -36,7 +38,10 @@ class LongArgument(Argument):
     default = 0
 
     def parse(self, value):
-        return long(float(value))
+        if six.PY2:
+            return long(float(value))
+        else:
+            return int(float(value))
 
 class StringArgument(Argument):
     default = ""
