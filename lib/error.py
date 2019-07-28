@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class AMQPClientError(StandardError):
+class AMQPClientError(BaseException):
     pass
 
 class InvalidArgumentValueError(AMQPClientError):

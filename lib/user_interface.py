@@ -9,10 +9,11 @@ class UserInterface(object):
     def read():
         global line_counter
         line_counter += 1
+        tips = "[%d]:> " % line_counter
         if six.PY2:
-            return raw_input("[%d]:> " % line_counter)
+            return raw_input(tips)
         else:
-            return input()
+            return input(tips)
 
     @staticmethod  # print the result
     def output(result):
