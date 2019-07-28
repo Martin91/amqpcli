@@ -3,6 +3,8 @@ amqpcli
 
 An interactive shell developed by Python to be used as a client to communicate with an AMQP broker(server).
 
+It is inspired by [Celery's amqp command line](https://github.com/celery/celery/blob/master/celery/bin/amqp.py), but amqpcli meant to provide a light-weight tool and others can use it without the necessity to install the whole Celery package.   
+
 ### Getting Started
 1. Install it by pip:
     ```sh
