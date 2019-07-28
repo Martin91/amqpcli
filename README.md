@@ -1,5 +1,8 @@
-amqpcli
-====
+```
+┌─┐┌┬┐┌─┐ ┌─┐┌─┐┬  ┬
+├─┤││││─┼┐├─┘│  │  │
+┴ ┴┴ ┴└─┘└┴  └─┘┴─┘┴
+```
 
 An interactive shell developed by Python to be used as a client to communicate with an AMQP broker(server).
 
